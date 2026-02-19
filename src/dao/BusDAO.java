@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 public class BusDAO {
     public void getAllBuses(){
@@ -18,6 +19,48 @@ public class BusDAO {
             while(rs.next()){
                 System.out.println(rs.getInt("bus_id") + "|" + rs.getString("bus_no") + "|" + rs.getInt("available_seats"));
             }
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    public void addBus() {
+        String query = "INSERT INTO bus (bus_no, capacity, available_seats, start_point, dest, travel_data) VALUES (?, ?, ?, ?, ?, ?) ";
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(query);
+             Scanner sc = new Scanner(System.in);)
+        {
+
+            while(true) {
+                System.out.println("Enter bus no");
+                String busNo = sc.next();
+                System.out.println("Enter capacity");
+                int capacity = sc.nextInt();
+                System.out.println("Available seats? :");
+                int available = sc.nextInt();
+                System.out.println("Starting Point: ");
+                String sPoint = sc.next();
+                System.out.println("Destination:");
+                String dest = sc.next();
+                System.out.println("Travel Date: ");
+                String date = sc.next();
+                System.out.println("Enter more data(Y/N)");
+                String choice  = sc.next();
+
+                ps.setString(1,busNo);
+                ps.setInt(2,capacity);
+                ps.setInt(3,available);
+                ps.setString(4,sPoint);
+                ps.setString(5,dest);
+                ps.setString(6,date);
+
+                ps.addBatch();
+                if(choice.toUpperCase().equals("N")) break;
+            }
+            int[] arr = ps.executeBatch();
+            System.out.println("data inserted");
+
         }
         catch (SQLException e){
             e.printStackTrace();

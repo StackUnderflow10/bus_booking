@@ -37,7 +37,7 @@ public class BusDAO {
                 String busNo = sc.next();
                 System.out.println("Enter capacity");
                 int capacity = sc.nextInt();
-                System.out.println("Available seats? :");
+                System.out.println("Available seats :");
                 int available = sc.nextInt();
                 System.out.println("Starting Point: ");
                 String sPoint = sc.next();
@@ -61,6 +61,32 @@ public class BusDAO {
             int[] arr = ps.executeBatch();
             System.out.println("data inserted");
 
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    public void searchBus(String startPoint, String destination, String date){
+        String query = "SELECT * FROM bus WHERE start_point = ? AND dest = ? AND travel_data = ? AND available_seats > 0";
+
+        try(Connection con = DBConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement(query);)
+        {
+            ps.setString(1,startPoint);
+            ps.setString(2,destination);
+            ps.setString(3,date);
+
+            ResultSet rs = ps.executeQuery();
+
+            boolean isFound  = false;
+
+            while(rs.next()){
+                isFound = true;
+                System.out.println(rs.getInt("bus_id") + " | " + rs.getString("bus_no"));
+            }
+            if(!isFound){
+                System.out.println("No buses available");
+            }
         }
         catch (SQLException e){
             e.printStackTrace();

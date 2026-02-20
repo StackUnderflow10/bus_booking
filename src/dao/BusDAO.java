@@ -67,22 +67,23 @@ public class BusDAO {
         }
     }
     public void searchBus(String startPoint, String destination, String date){
-        String query = "SELECT * FROM bus WHERE start_point = ? AND dest = ? AND travel_data = ? AND available_seats > 0";
+        String query = "SELECT * FROM bus WHERE LOWER(start_point) = (LOWER)? AND (LOWER)dest = (LOWER)? AND travel_data = ? AND available_seats > 0";
 
         try(Connection con = DBConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement(query);)
+            PreparedStatement ps = con.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();)
         {
             ps.setString(1,startPoint);
             ps.setString(2,destination);
             ps.setString(3,date);
 
-            ResultSet rs = ps.executeQuery();
-
             boolean isFound  = false;
 
             while(rs.next()){
                 isFound = true;
-                System.out.println(rs.getInt("bus_id") + " | " + rs.getString("bus_no"));
+                System.out.println( "ID: " + rs.getInt("bus_id") +
+                        " | Bus No: " + rs.getString("bus_no") +
+                        " | Seats: " + rs.getInt("available_seats"));
             }
             if(!isFound){
                 System.out.println("No buses available");

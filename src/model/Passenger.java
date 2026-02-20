@@ -9,9 +9,8 @@ public class Passenger {
     private int busId;
     private String startPoint;
     private String dest;
-    private String travelData;
 
-    public Passenger(String name,int age, String bookingDate, double amount, int busId, String startPoint, String dest, String travelData){
+    public Passenger(String name,int age, String bookingDate, double amount, int busId, String startPoint, String dest){
         this.name = name;
         this.age = age;
         this.bookingDate = bookingDate;
@@ -19,7 +18,6 @@ public class Passenger {
         this.busId = busId;
         this.startPoint = startPoint;
         this.dest = dest;
-        this.travelData = travelData;
     }
     public Passenger(int passId,String name,int age, String bookingDate, double amount, int busId, String startPoint, String dest){
         this.passId = passId;
@@ -75,12 +73,6 @@ public class Passenger {
         this.dest = dest;
     }
 
-    public String getTravelData() {
-        return travelData;
-    }
-    public void setTravelData(String travelData) {
-        this.travelData = travelData;
-    }
 
     @Override
     public String toString() {
